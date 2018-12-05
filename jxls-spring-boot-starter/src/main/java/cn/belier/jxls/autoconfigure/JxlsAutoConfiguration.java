@@ -28,6 +28,7 @@ import javax.servlet.Servlet;
 @Configuration
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnClass({Servlet.class, JxlsHelper.class})
+@ConditionalOnProperty(name = "spring.jxls.enabled", matchIfMissing = true)
 @AutoConfigureAfter(WebMvcAutoConfiguration.class)
 @EnableConfigurationProperties(JxlsProperties.class)
 @Import(JxlsWebMvcConfigurer.class)
@@ -38,14 +39,12 @@ public class JxlsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(name = "jxlsViewResolver")
-    @ConditionalOnProperty(name = "spring.jxls.enabled", matchIfMissing = true)
     public JxlsViewResolver jxlsViewResolver() {
         JxlsViewResolver jxlsViewResolver = new JxlsViewResolver();
         jxlsProperties.applyToMvcViewResolver(jxlsViewResolver);
-        jxlsViewResolver.setContentType(JxlsViewResolver.EXCEL_XLSX_CONTENT_TYPE);
+        jxlsViewResolver.setContentType(jxlsProperties.getContentType().toString());
         return jxlsViewResolver;
     }
-
 
     @Bean
     public JxlsConfig jxlsConfig() {
