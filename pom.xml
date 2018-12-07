@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>cn.belier</groupId>
     <artifactId>jxls-spring-extend</artifactId>
-    <version>1.0.1</version>
+    <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -22,7 +22,7 @@
     </developers>
 
     <properties>
-        <jxls.spring.extend.version>1.0.1</jxls.spring.extend.version>
+        <jxls.spring.extend.version>1.1.0-SNAPSHOT</jxls.spring.extend.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
         <springframework.version>5.0.0.RELEASE</springframework.version>
@@ -30,6 +30,7 @@
         <jxls-poi.version>1.0.16</jxls-poi.version>
         <spring.boot.version>2.0.1.RELEASE</spring.boot.version>
         <lombok.version>1.16.18</lombok.version>
+        <commons-lang3.version>3.7</commons-lang3.version>
     </properties>
 
     <dependencyManagement>
@@ -75,6 +76,7 @@
                 <groupId>org.projectlombok</groupId>
                 <artifactId>lombok</artifactId>
                 <version>${lombok.version}</version>
+                <optional>true</optional>
             </dependency>
 
             <dependency>
@@ -87,6 +89,12 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>
                 <version>${spring.boot.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.apache.commons</groupId>
+                <artifactId>commons-lang3</artifactId>
+                <version>${commons-lang3.version}</version>
             </dependency>
 
         </dependencies>

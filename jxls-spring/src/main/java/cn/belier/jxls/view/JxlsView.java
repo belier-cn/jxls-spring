@@ -5,6 +5,7 @@ import cn.belier.jxls.encoder.DownloadFilenameHandler;
 import cn.belier.jxls.filename.FilenameGenerate;
 import cn.belier.jxls.filename.JxlsFilenameUtils;
 import lombok.Cleanup;
+import org.apache.commons.jexl2.JexlEngine;
 import org.jxls.common.Context;
 import org.jxls.expression.JexlExpressionEvaluator;
 import org.jxls.transform.Transformer;
@@ -42,18 +43,22 @@ public class JxlsView extends AbstractTemplateView {
 
     private FilenameGenerate filenameGenerate;
 
+    private JxlsHelper jxlsHelper;
+
     @Override
     protected void initServletContext(ServletContext servletContext) {
 
         this.config = BeanFactoryUtils.beanOfTypeIncludingAncestors(
                 obtainApplicationContext(), JxlsConfig.class, true, false);
 
+        this.jxlsHelper = BeanFactoryUtils.beanOfTypeIncludingAncestors(
+                obtainApplicationContext(), JxlsHelper.class, true, false);
+
         this.downloadFilenameHandler = BeanFactoryUtils.beanOfTypeIncludingAncestors(
                 obtainApplicationContext(), DownloadFilenameHandler.class, true, false);
 
         this.filenameGenerate = BeanFactoryUtils.beanOfTypeIncludingAncestors(
                 obtainApplicationContext(), FilenameGenerate.class, true, false);
-
     }
 
     @Override
@@ -75,12 +80,19 @@ public class JxlsView extends AbstractTemplateView {
 
         Transformer transformer = TransformerFactory.createTransformer(template, response.getOutputStream());
 
-        ((JexlExpressionEvaluator) transformer.getTransformationConfig().getExpressionEvaluator()).getJexlEngine()
-                // 静默模式配置
-                .setSilent(this.config.isSilent());
+        JexlExpressionEvaluator expressionEvaluator = (JexlExpressionEvaluator) transformer
+                .getTransformationConfig().getExpressionEvaluator();
+
+        JexlEngine jexlEngine = expressionEvaluator.getJexlEngine();
+
+        // 设置方法列表
+        jexlEngine.setFunctions(this.config.getFunctions());
+
+        // 静默模式配置
+        jexlEngine.setSilent(this.config.isSilent());
 
         // 输出渲染后的数据
-        JxlsHelper.getInstance().processTemplate(context, transformer);
+        this.jxlsHelper.processTemplate(context, transformer);
 
     }
 
