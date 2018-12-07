@@ -1,6 +1,5 @@
 package cn.belier.jxls.autoconfigure;
 
-import cn.belier.jxls.autoconfigure.function.DateFunctionConfig;
 import cn.belier.jxls.config.JxlsConfig;
 import cn.belier.jxls.encoder.DefaultDownloadFilenameHandler;
 import cn.belier.jxls.encoder.DownloadFilenameHandler;
@@ -104,7 +103,7 @@ public class JxlsAutoConfiguration {
     @ConditionalOnProperty(name = "spring.jxls.function.date.enabled", matchIfMissing = true)
     public JxlsFunction dateFunction() {
 
-        DateFunctionConfig dateConfig = this.jxlsProperties.getFunction().getDate();
+        JxlsProperties.DateFunctionConfig dateConfig = this.jxlsProperties.getFunction().getDate();
 
         DateFunction dateFunction = DateFunction.of()
                 .setDate(dateConfig.getDate())

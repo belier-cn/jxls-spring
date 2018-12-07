@@ -1,7 +1,8 @@
 package cn.belier.jxls.autoconfigure;
 
-import cn.belier.jxls.autoconfigure.function.FunctionConfig;
+import cn.belier.jxls.function.DateFunction;
 import cn.belier.jxls.view.JxlsViewResolver;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.boot.autoconfigure.template.AbstractTemplateViewResolverProperties;
@@ -69,6 +70,28 @@ public class JxlsProperties extends AbstractTemplateViewResolverProperties {
         super(DEFAULT_PREFIX, DEFAULT_SUFFIX);
         // 设置默认的 contentType
         setContentType(MimeType.valueOf(JxlsViewResolver.EXCEL_XLSX_CONTENT_TYPE));
+    }
+
+    @Data
+    public static class FunctionConfig {
+
+        private DateFunctionConfig date = new DateFunctionConfig();
+
+    }
+
+    @Data
+    public static class DateFunctionConfig {
+
+        private boolean enabled = true;
+
+        private String name = DateFunction.NAME;
+
+        private String date = DateFunction.DATE;
+
+        private String datetime = DateFunction.DATE_TIME;
+
+        private String time = DateFunction.TIME;
+
     }
 
 }
