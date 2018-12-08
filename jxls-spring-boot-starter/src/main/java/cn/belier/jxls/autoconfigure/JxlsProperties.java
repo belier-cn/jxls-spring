@@ -10,6 +10,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.util.MimeType;
 
 /**
+ * jxls自动化配置参数
+ *
  * @author belier
  * @date 2018/11/30
  */
@@ -72,6 +74,9 @@ public class JxlsProperties extends AbstractTemplateViewResolverProperties {
         setContentType(MimeType.valueOf(JxlsViewResolver.EXCEL_XLSX_CONTENT_TYPE));
     }
 
+    /**
+     * 扩展方法配置
+     */
     @Data
     public static class FunctionConfig {
 
@@ -79,6 +84,9 @@ public class JxlsProperties extends AbstractTemplateViewResolverProperties {
 
     }
 
+    /**
+     * 日期扩展方法配置
+     */
     @Data
     public static class DateFunctionConfig {
 

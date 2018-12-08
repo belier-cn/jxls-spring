@@ -10,7 +10,7 @@ import java.io.UnsupportedEncodingException;
  * @date 2018/12/4
  */
 @FunctionalInterface
-public interface DownloadFilenameHandler {
+public interface ContentDispositionHandler {
 
 
     /**

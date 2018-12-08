@@ -1,8 +1,8 @@
 package cn.belier.jxls.autoconfigure;
 
 import cn.belier.jxls.config.JxlsConfig;
-import cn.belier.jxls.encoder.DefaultDownloadFilenameHandler;
-import cn.belier.jxls.encoder.DownloadFilenameHandler;
+import cn.belier.jxls.encoder.ContentDispositionHandler;
+import cn.belier.jxls.encoder.DefaultContentDispositionHandler;
 import cn.belier.jxls.filename.DefaultFilenameGenerate;
 import cn.belier.jxls.filename.FilenameGenerate;
 import cn.belier.jxls.function.DateFunction;
@@ -79,13 +79,13 @@ public class JxlsAutoConfiguration {
     }
 
     /**
-     * 文件名称处理
+     * ContentDisposition处理
      */
     @Bean
-    @ConditionalOnMissingBean(DownloadFilenameHandler.class)
-    public DownloadFilenameHandler downloadFilenameEncoder() {
+    @ConditionalOnMissingBean(ContentDispositionHandler.class)
+    public ContentDispositionHandler contentDispositionHandler() {
 
-        return new DefaultDownloadFilenameHandler();
+        return new DefaultContentDispositionHandler();
     }
 
 

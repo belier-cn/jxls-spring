@@ -1,7 +1,7 @@
 package cn.belier.jxls.view;
 
 import cn.belier.jxls.config.JxlsConfig;
-import cn.belier.jxls.encoder.DownloadFilenameHandler;
+import cn.belier.jxls.encoder.ContentDispositionHandler;
 import cn.belier.jxls.filename.FilenameGenerate;
 import cn.belier.jxls.filename.JxlsFilenameUtils;
 import lombok.Cleanup;
@@ -37,7 +37,7 @@ public class JxlsView extends AbstractTemplateView {
 
     private PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
 
-    private DownloadFilenameHandler downloadFilenameHandler;
+    private ContentDispositionHandler contentDispositionHandler;
 
     private JxlsConfig config;
 
@@ -54,8 +54,8 @@ public class JxlsView extends AbstractTemplateView {
         this.jxlsHelper = BeanFactoryUtils.beanOfTypeIncludingAncestors(
                 obtainApplicationContext(), JxlsHelper.class, true, false);
 
-        this.downloadFilenameHandler = BeanFactoryUtils.beanOfTypeIncludingAncestors(
-                obtainApplicationContext(), DownloadFilenameHandler.class, true, false);
+        this.contentDispositionHandler = BeanFactoryUtils.beanOfTypeIncludingAncestors(
+                obtainApplicationContext(), ContentDispositionHandler.class, true, false);
 
         this.filenameGenerate = BeanFactoryUtils.beanOfTypeIncludingAncestors(
                 obtainApplicationContext(), FilenameGenerate.class, true, false);
@@ -70,7 +70,7 @@ public class JxlsView extends AbstractTemplateView {
         // 创建Jxls的上下文
         Context context = new Context(model);
 
-        String contentDisposition = this.downloadFilenameHandler.getContentDisposition(request, getFilename(context));
+        String contentDisposition = this.contentDispositionHandler.getContentDisposition(request, getFilename(context));
 
         response.setHeader("Content-Disposition", contentDisposition);
 
@@ -96,6 +96,12 @@ public class JxlsView extends AbstractTemplateView {
 
     }
 
+    /**
+     * 获取文件名称
+     *
+     * @param context jxls上下文
+     * @return 文件名称
+     */
     private String getFilename(Context context) {
 
         // 获取设置的文件名称
