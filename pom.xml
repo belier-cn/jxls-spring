@@ -45,6 +45,8 @@
         <jxls.spring.extend.version>1.1.0</jxls.spring.extend.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
+        <javadoc.version>8</javadoc.version>
+        <javadoc-plugin.version>3.0.0</javadoc-plugin.version>
         <springframework.version>5.0.0.RELEASE</springframework.version>
         <jxls.version>2.4.7</jxls.version>
         <jxls-poi.version>1.0.16</jxls-poi.version>
@@ -166,6 +168,24 @@
                         </executions>
                         <configuration>
                             <attach>true</attach>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>${javadoc-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>package</phase>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <links>
+                                <link>https://docs.oracle.com/javase/${javadoc.version}/docs/api</link>
+                            </links>
                         </configuration>
                     </plugin>
                     <plugin>
