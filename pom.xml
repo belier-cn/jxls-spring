@@ -9,10 +9,21 @@
     <version>1.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
+    <name>jxls-spring-extend</name>
+    <description>jxls的spring扩展父工程</description>
+    <url>https://github.com/belier-cn/jxls-spring-extend</url>
+
     <modules>
         <module>jxls-spring</module>
         <module>jxls-spring-boot-starter</module>
     </modules>
+
+    <licenses>
+        <license>
+            <name>The MIT License (MIT)</name>
+            <url>https://github.com/belier-cn/jxls-spring-extend/blob/master/LICENSE</url>
+        </license>
+    </licenses>
 
     <developers>
         <developer>
@@ -21,7 +32,16 @@
         </developer>
     </developers>
 
+    <scm>
+        <connection>scm:git@github.com:belier-cn/jxls-spring-extend.git</connection>
+        <developerConnection>scm:git@github.com:belier-cn/jxls-spring-extend.git</developerConnection>
+        <url>git@github.com:belier-cn/jxls-spring-extend.git</url>
+    </scm>
+
     <properties>
+        <gpg-plugin.version>1.6</gpg-plugin.version>
+        <source-plugin.version>3.0.1</source-plugin.version>
+        <javadoc-plugin.version>3.0.0</javadoc-plugin.version>
         <jxls.spring.extend.version>1.1.0-SNAPSHOT</jxls.spring.extend.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
@@ -127,15 +147,54 @@
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>maven-releases</id>
-            <url>http://nexus.kerkr.com.cn/repository/maven-releases/</url>
-        </repository>
-        <snapshotRepository>
-            <id>maven-snapshots</id>
-            <url>http://nexus.kerkr.com.cn/repository/maven-snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>${source-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <attach>true</attach>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>${gpg-plugin.version}</version>
+                        <executions>
+                            <execution>
+                                <phase>install</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+            <distributionManagement>
+                <snapshotRepository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+                <repository>
+                    <id>oss</id>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+            </distributionManagement>
+        </profile>
+    </profiles>
+
 
 </project>

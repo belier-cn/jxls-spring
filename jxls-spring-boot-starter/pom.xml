@@ -11,6 +11,10 @@
 
     <artifactId>jxls-spring-boot-starter</artifactId>
 
+    <name>jxls-spring-boot-starter</name>
+    <description>jxls的spring boot自动装配</description>
+
+
     <dependencies>
 
         <dependency>

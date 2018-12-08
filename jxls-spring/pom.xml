@@ -11,6 +11,9 @@
 
     <artifactId>jxls-spring</artifactId>
 
+    <name>jxls-spring</name>
+    <description>jxls的spring扩展</description>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework</groupId>
