@@ -1,4 +1,5 @@
 # Jxls的spring扩展
+[![Maven Central](https://img.shields.io/maven-central/v/cn.belier/jxls-spring-extend.svg?label=Maven%20Central)](https://search.maven.org/search?q=g:%22cn.belier%22%20AND%20a:%22jxls-spring-extend%22)
 
 该项目扩展了一个Jxls的视图处理器，以便开发者更方便的导出excel文档
 
