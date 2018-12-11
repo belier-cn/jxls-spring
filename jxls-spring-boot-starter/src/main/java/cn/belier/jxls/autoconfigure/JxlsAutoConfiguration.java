@@ -101,18 +101,13 @@ public class JxlsAutoConfiguration {
 
     @Bean
     @ConditionalOnProperty(name = "spring.jxls.function.date.enabled", matchIfMissing = true)
-    public JxlsFunction dateFunction() {
+    public DateFunction dateFunction() {
 
         JxlsProperties.DateFunctionConfig dateConfig = this.jxlsProperties.getFunction().getDate();
 
-        DateFunction dateFunction = DateFunction.of()
+        return DateFunction.of()
                 .setDate(dateConfig.getDate())
                 .setDatetime(dateConfig.getDatetime())
                 .setTime(dateConfig.getTime());
-
-        return JxlsFunction.builder()
-                .name(dateConfig.getName())
-                .fun(dateFunction)
-                .build();
     }
 }

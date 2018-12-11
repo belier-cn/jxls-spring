@@ -23,7 +23,7 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Data
 @Accessors(chain = true)
-public class DateFunction {
+public class DateFunction implements JxlsFunction {
 
     public static final String NAME = "date";
 
@@ -38,12 +38,19 @@ public class DateFunction {
     private String datetime = DATE_TIME;
 
     private String time = TIME;
-
     @Setter(AccessLevel.NONE)
     private Map<String, DateTimeFormatter> dateTimeFormatterCache = new ConcurrentHashMap<>();
 
+    private DateFunction() {
+    }
+
     public static DateFunction of() {
         return new DateFunction();
+    }
+
+    public static DateFunction getInstance() {
+        // 加载 DateFunctionHolder 就会实例化 DateFunction
+        return DateFunctionHolder.INSTANCE;
     }
 
     public String format(LocalDateTime localDateTime, String format) {
@@ -113,5 +120,22 @@ public class DateFunction {
     private DateTimeFormatter getDateTimeFormatter(String format) {
         return dateTimeFormatterCache.computeIfAbsent(format, key -> DateTimeFormatter.ofPattern(format));
     }
+
+    @Override
+    public String getName() {
+        return NAME;
+    }
+
+    @Override
+    public Object getFunction() {
+        return getInstance();
+    }
+
+    private static class DateFunctionHolder {
+
+        private static final DateFunction INSTANCE = new DateFunction();
+
+    }
+
 
 }
