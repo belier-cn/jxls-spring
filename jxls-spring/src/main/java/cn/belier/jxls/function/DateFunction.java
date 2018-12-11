@@ -5,8 +5,8 @@ import lombok.Data;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -38,8 +38,12 @@ public class DateFunction implements JxlsFunction {
     private String datetime = DATE_TIME;
 
     private String time = TIME;
+
     @Setter(AccessLevel.NONE)
     private Map<String, DateTimeFormatter> dateTimeFormatterCache = new ConcurrentHashMap<>();
+
+    @Setter(AccessLevel.NONE)
+    private Map<String, FastDateFormat> fastDateFormatCache = new ConcurrentHashMap<>();
 
     private DateFunction() {
     }
@@ -78,7 +82,7 @@ public class DateFunction implements JxlsFunction {
         if (date == null || StringUtils.isBlank(format)) {
             return "";
         }
-        return new SimpleDateFormat(format).format(date);
+        return getFastDateFormat(format).format(date);
     }
 
     public String datetime(LocalDateTime localDateTime) {
@@ -119,6 +123,10 @@ public class DateFunction implements JxlsFunction {
 
     private DateTimeFormatter getDateTimeFormatter(String format) {
         return dateTimeFormatterCache.computeIfAbsent(format, key -> DateTimeFormatter.ofPattern(format));
+    }
+
+    private FastDateFormat getFastDateFormat(String format) {
+        return fastDateFormatCache.computeIfAbsent(format, key -> FastDateFormat.getInstance(format));
     }
 
     @Override
