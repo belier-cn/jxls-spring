@@ -105,9 +105,13 @@ public class JxlsAutoConfiguration {
 
         JxlsProperties.DateFunctionConfig dateConfig = this.jxlsProperties.getFunction().getDate();
 
-        return DateFunction.of()
+        DateFunction dateFunction = DateFunction.of()
                 .setDate(dateConfig.getDate())
                 .setDatetime(dateConfig.getDatetime())
                 .setTime(dateConfig.getTime());
+
+        dateConfig.setName(dateConfig.getName());
+
+        return dateFunction;
     }
 }

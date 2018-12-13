@@ -15,11 +15,4 @@ public interface JxlsFunction {
      */
     String getName();
 
-    /**
-     * 扩展方法对象
-     *
-     * @return 方法对象
-     */
-    Object getFunction();
-
 }

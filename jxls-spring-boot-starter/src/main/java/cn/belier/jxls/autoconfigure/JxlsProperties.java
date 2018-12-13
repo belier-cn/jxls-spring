@@ -92,13 +92,13 @@ public class JxlsProperties extends AbstractTemplateViewResolverProperties {
 
         private boolean enabled = true;
 
-        private String name = DateFunction.NAME;
+        private String name = DateFunction.DEFAULT_NAME;
 
-        private String date = DateFunction.DATE;
+        private String date = DateFunction.DEFAULT_DATE;
 
-        private String datetime = DateFunction.DATE_TIME;
+        private String datetime = DateFunction.DEFAULT_DATE_TIME;
 
-        private String time = DateFunction.TIME;
+        private String time = DateFunction.DEFAULT_TIME;
 
     }
 

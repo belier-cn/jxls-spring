@@ -2,6 +2,7 @@ package cn.belier.jxls.function;
 
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import org.apache.commons.lang3.StringUtils;
@@ -23,38 +24,38 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 @Data
 @Accessors(chain = true)
-public class DateFunction implements JxlsFunction {
+@EqualsAndHashCode(callSuper = true)
+public class DateFunction extends AbstractJxlsFunction {
 
-    public static final String NAME = "date";
+    public static final String DEFAULT_NAME = "date";
 
-    public static final String DATE = "yyyy-MM-dd";
+    public static final String DEFAULT_DATE = "yyyy-MM-dd";
 
-    public static final String TIME = "HH:mm:ss";
+    public static final String DEFAULT_TIME = "HH:mm:ss";
 
-    public static final String DATE_TIME = "yyyy-MM-dd HH:mm:ss";
+    public static final String DEFAULT_DATE_TIME = "yyyy-MM-dd HH:mm:ss";
 
-    private String date = DATE;
+    private String date = DEFAULT_DATE;
 
-    private String datetime = DATE_TIME;
+    private String datetime = DEFAULT_DATE_TIME;
 
-    private String time = TIME;
+    private String time = DEFAULT_TIME;
 
     @Setter(AccessLevel.NONE)
     private Map<String, DateTimeFormatter> dateTimeFormatterCache = new ConcurrentHashMap<>();
 
-    @Setter(AccessLevel.NONE)
-    private Map<String, FastDateFormat> fastDateFormatCache = new ConcurrentHashMap<>();
-
     private DateFunction() {
+        // 设置默认的名字
+        this.name = DEFAULT_NAME;
     }
 
+    /**
+     * 获取{@link DateFunction} 实例
+     *
+     * @return {@link DateFunction}
+     */
     public static DateFunction of() {
         return new DateFunction();
-    }
-
-    public static DateFunction getInstance() {
-        // 加载 DateFunctionHolder 就会实例化 DateFunction
-        return DateFunctionHolder.INSTANCE;
     }
 
     public String format(LocalDateTime localDateTime, String format) {
@@ -75,6 +76,7 @@ public class DateFunction implements JxlsFunction {
         if (localTime == null || StringUtils.isBlank(format)) {
             return "";
         }
+
         return localTime.format(getDateTimeFormatter(format));
     }
 
@@ -82,7 +84,7 @@ public class DateFunction implements JxlsFunction {
         if (date == null || StringUtils.isBlank(format)) {
             return "";
         }
-        return getFastDateFormat(format).format(date);
+        return FastDateFormat.getInstance(format).format(date);
     }
 
     public String datetime(LocalDateTime localDateTime) {
@@ -123,26 +125,6 @@ public class DateFunction implements JxlsFunction {
 
     private DateTimeFormatter getDateTimeFormatter(String format) {
         return dateTimeFormatterCache.computeIfAbsent(format, key -> DateTimeFormatter.ofPattern(format));
-    }
-
-    private FastDateFormat getFastDateFormat(String format) {
-        return fastDateFormatCache.computeIfAbsent(format, key -> FastDateFormat.getInstance(format));
-    }
-
-    @Override
-    public String getName() {
-        return NAME;
-    }
-
-    @Override
-    public Object getFunction() {
-        return getInstance();
-    }
-
-    private static class DateFunctionHolder {
-
-        private static final DateFunction INSTANCE = new DateFunction();
-
     }
 
 
