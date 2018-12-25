@@ -41,6 +41,7 @@
     <properties>
         <gpg-plugin.version>1.6</gpg-plugin.version>
         <source-plugin.version>3.0.1</source-plugin.version>
+        <compiler-plugin.version>3.8.0</compiler-plugin.version>
         <javadoc-plugin.version>3.0.0</javadoc-plugin.version>
         <jxls.spring.extend.version>1.1.0</jxls.spring.extend.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -126,6 +127,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -136,6 +138,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>
+                <version>${source-plugin.version}</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
