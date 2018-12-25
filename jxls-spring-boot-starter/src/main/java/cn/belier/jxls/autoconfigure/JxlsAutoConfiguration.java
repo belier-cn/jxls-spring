@@ -59,7 +59,7 @@ public class JxlsAutoConfiguration {
         JxlsConfig config = new JxlsConfig();
 
         config.setSilent(this.jxlsProperties.isSilent())
-                .addFunctions(jxlsFunctions)
+                .addFunctions(this.jxlsFunctions)
                 .setTemplateLoaderPath(this.jxlsProperties.getTemplateLoaderPath())
                 .setCache(this.jxlsProperties.isCache());
 
