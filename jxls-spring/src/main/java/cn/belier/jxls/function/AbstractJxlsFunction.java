@@ -15,4 +15,9 @@ public class AbstractJxlsFunction implements JxlsFunction {
     public String getName() {
         return this.name;
     }
+
+    @Override
+    public Object getFunction() {
+        return this;
+    }
 }

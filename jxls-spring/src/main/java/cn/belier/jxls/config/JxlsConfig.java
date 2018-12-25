@@ -68,7 +68,7 @@ public class JxlsConfig {
      * @return {@link JxlsConfig} 链式操作
      */
     public JxlsConfig addFunction(JxlsFunction jxlsFunction) {
-        this.functions.put(jxlsFunction.getName(), jxlsFunction);
+        this.functions.put(jxlsFunction.getName(), jxlsFunction.getFunction());
         return this;
     }
 
