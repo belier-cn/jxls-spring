@@ -7,3 +7,10 @@
 # 使用文档
 
 [查看文档](https://github.com/belier-cn/jxls-spring-extend/wiki)
+
+
+# 1.2.0 版本计划
+
+- 升级jxls版本为2.5.1
+
+- 缓存模板，提高性能
