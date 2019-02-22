@@ -1,5 +1,6 @@
 package cn.belier.jxls.autoconfigure;
 
+import cn.belier.jxls.cahce.TemplateCache;
 import cn.belier.jxls.config.JxlsConfig;
 import cn.belier.jxls.encoder.ContentDispositionHandler;
 import cn.belier.jxls.encoder.DefaultContentDispositionHandler;
@@ -54,6 +55,7 @@ public class JxlsAutoConfiguration {
 
 
     @Bean
+    @ConditionalOnMissingBean(JxlsConfig.class)
     public JxlsConfig jxlsConfig() {
 
         JxlsConfig config = new JxlsConfig();
@@ -68,6 +70,7 @@ public class JxlsAutoConfiguration {
 
 
     @Bean
+    @ConditionalOnMissingBean(JxlsHelper.class)
     public JxlsHelper jxlsHelper() {
 
         return JxlsHelper.getInstance()
@@ -114,4 +117,11 @@ public class JxlsAutoConfiguration {
 
         return dateFunction;
     }
+
+    @Bean
+    @ConditionalOnMissingBean(TemplateCache.class)
+    public TemplateCache templateCache() {
+        return new TemplateCache();
+    }
+
 }

@@ -1,10 +1,10 @@
 package cn.belier.jxls.view;
 
+import cn.belier.jxls.cahce.TemplateCache;
 import cn.belier.jxls.config.JxlsConfig;
 import cn.belier.jxls.encoder.ContentDispositionHandler;
 import cn.belier.jxls.filename.FilenameGenerate;
 import cn.belier.jxls.filename.JxlsFilenameUtils;
-import lombok.Cleanup;
 import org.apache.commons.jexl2.JexlEngine;
 import org.jxls.common.Context;
 import org.jxls.expression.JexlExpressionEvaluator;
@@ -12,19 +12,17 @@ import org.jxls.transform.Transformer;
 import org.jxls.util.JxlsHelper;
 import org.jxls.util.TransformerFactory;
 import org.springframework.beans.factory.BeanFactoryUtils;
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.http.HttpStatus;
-import org.springframework.util.ResourceUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.view.AbstractTemplateView;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Jxls 视图
@@ -35,8 +33,6 @@ import java.util.Map;
 
 public class JxlsView extends AbstractTemplateView {
 
-    private PathMatchingResourcePatternResolver patternResolver = new PathMatchingResourcePatternResolver();
-
     private ContentDispositionHandler contentDispositionHandler;
 
     private JxlsConfig config;
@@ -44,6 +40,8 @@ public class JxlsView extends AbstractTemplateView {
     private FilenameGenerate filenameGenerate;
 
     private JxlsHelper jxlsHelper;
+
+    private TemplateCache templateCache;
 
     @Override
     protected void initServletContext(ServletContext servletContext) {
@@ -59,6 +57,10 @@ public class JxlsView extends AbstractTemplateView {
 
         this.filenameGenerate = BeanFactoryUtils.beanOfTypeIncludingAncestors(
                 obtainApplicationContext(), FilenameGenerate.class, true, false);
+
+        this.templateCache = BeanFactoryUtils.beanOfTypeIncludingAncestors(
+                obtainApplicationContext(), TemplateCache.class, true, false);
+
     }
 
     @Override
@@ -75,8 +77,11 @@ public class JxlsView extends AbstractTemplateView {
         response.setHeader("Content-Disposition", contentDisposition);
 
         // 获取对应的模板
-        @Cleanup
         InputStream template = getTemplate();
+
+        if (template == null) {
+            return;
+        }
 
         Transformer transformer = TransformerFactory.createTransformer(template, response.getOutputStream());
 
@@ -108,7 +113,7 @@ public class JxlsView extends AbstractTemplateView {
         String filename = JxlsFilenameUtils.getFilename(context);
 
         // 获取扩展名称
-        String extension = this.getUrl().substring(this.getUrl().lastIndexOf("."));
+        String extension = this.getUrl().substring(Objects.requireNonNull(this.getUrl()).lastIndexOf("."));
 
         // 没有设置就使用默认的
         if (StringUtils.isEmpty(filename)) {
@@ -123,23 +128,17 @@ public class JxlsView extends AbstractTemplateView {
      * 获取模板
      *
      * @return {@link InputStream}
-     * @throws IOException IO异常
      */
-    private InputStream getTemplate() throws IOException {
+    private InputStream getTemplate() {
 
         for (String path : this.config.getTemplateLoaderPath()) {
 
-            // 模板全路径
-            String templatePath = path + getUrl();
+            byte[] template = templateCache.getTemplate(path + getUrl());
 
-            // 加载模板
-            InputStream inputStream = templatePath.startsWith(ResourceUtils.CLASSPATH_URL_PREFIX)
-                    ? this.patternResolver.getResource(templatePath).getInputStream()
-                    : new FileInputStream(templatePath);
-
-            if (inputStream != null) {
-                return inputStream;
+            if (template != null) {
+                return new ByteArrayInputStream(template);
             }
+
         }
 
         return null;
