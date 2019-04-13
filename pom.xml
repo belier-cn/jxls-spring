@@ -63,7 +63,7 @@
             <dependency>
                 <groupId>cn.belier</groupId>
                 <artifactId>jxls-spring</artifactId>
-                <version>${jxls.spring.extend.version}</version>
+                <version>${project.version}</version>
             </dependency>
 
             <dependency>

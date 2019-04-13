@@ -5,7 +5,8 @@ import cn.belier.jxls.config.JxlsConfig;
 import cn.belier.jxls.encoder.ContentDispositionHandler;
 import cn.belier.jxls.filename.FilenameGenerate;
 import cn.belier.jxls.filename.JxlsFilenameUtils;
-import org.apache.commons.jexl2.JexlEngine;
+import org.apache.commons.jexl3.JexlBuilder;
+import org.apache.commons.jexl3.JexlEngine;
 import org.jxls.common.Context;
 import org.jxls.expression.JexlExpressionEvaluator;
 import org.jxls.transform.Transformer;
@@ -88,13 +89,15 @@ public class JxlsView extends AbstractTemplateView {
         JexlExpressionEvaluator expressionEvaluator = (JexlExpressionEvaluator) transformer
                 .getTransformationConfig().getExpressionEvaluator();
 
-        JexlEngine jexlEngine = expressionEvaluator.getJexlEngine();
+        JexlEngine customJexlEngine = new JexlBuilder()
+                // 自定义方法
+                .namespaces(this.config.getFunctions())
+                // 静默模式配置
+                .silent(this.config.isSilent())
+                .create();
 
-        // 设置方法列表
-        jexlEngine.setFunctions(this.config.getFunctions());
+        expressionEvaluator.setJexlEngine(customJexlEngine);
 
-        // 静默模式配置
-        jexlEngine.setSilent(this.config.isSilent());
 
         // 输出渲染后的数据
         this.jxlsHelper.processTemplate(context, transformer);
