@@ -49,7 +49,7 @@
         <javadoc.version>8</javadoc.version>
         <springframework.version>5.0.0.RELEASE</springframework.version>
         <jxls.version>2.6.0</jxls.version>
-        <jxls-poi.version>1.0.16</jxls-poi.version>
+        <jxls-poi.version>1.2.0</jxls-poi.version>
         <spring.boot.version>2.0.1.RELEASE</spring.boot.version>
         <lombok.version>1.16.18</lombok.version>
         <commons-lang3.version>3.7</commons-lang3.version>
