@@ -197,6 +197,7 @@
                             <links>
                                 <link>https://docs.oracle.com/javase/${javadoc.version}/docs/api</link>
                             </links>
+                            <doclint>none</doclint>
                         </configuration>
                     </plugin>
                     <plugin>
